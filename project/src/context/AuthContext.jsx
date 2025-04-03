@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, useEffect } from 'react';
-import { authService } from '../services/authService';
+import authService from '../services/authServices';
 
 const AuthContext = createContext();
 
@@ -10,56 +10,54 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const checkAuthStatus = async () => {
+    const initAuth = async () => {
       try {
-        const userData = await authService.getCurrentUser();
-        setUser(userData);
+        const currentUser = await authService.getCurrentUser();
+        setUser(currentUser);
       } catch (error) {
-        console.error("Auth check failed:", error);
-        setUser(null);
+        console.error('Auth initialization error:', error);
       } finally {
         setLoading(false);
       }
     };
-
-    checkAuthStatus();
+    
+    initAuth();
   }, []);
 
-  const login = async (credentials) => {
-    setLoading(true);
+  const login = async (email, password) => {
     try {
-      const userData = await authService.login(credentials);
-      setUser(userData);
-      return userData;
+      const user = await authService.login(email, password);
+      setUser(user);
+      return user;
     } catch (error) {
-      console.error("Login failed:", error);
+      console.error('Login error:', error);
       throw error;
-    } finally {
-      setLoading(false);
+    }
+  };
+
+  const signup = async (name, email, password) => {
+    try {
+      const user = await authService.register({ name, email, password });
+      setUser(user);
+      return user;
+    } catch (error) {
+      console.error('Signup error:', error);
+      throw error;
     }
   };
 
   const logout = async () => {
-    setLoading(true);
     try {
       await authService.logout();
       setUser(null);
     } catch (error) {
-      console.error("Logout failed:", error);
-    } finally {
-      setLoading(false);
+      console.error('Logout error:', error);
+      throw error;
     }
   };
 
-  const value = {
-    user,
-    loading,
-    login,
-    logout
-  };
-
   return (
-    <AuthContext.Provider value={value}>
+    <AuthContext.Provider value={{ user, login, signup, logout, loading }}>
       {children}
     </AuthContext.Provider>
   );

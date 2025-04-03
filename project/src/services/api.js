@@ -2,28 +2,34 @@ import axios from 'axios';
 
 // Base API configuration
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000/api',
+  baseURL: 'http://localhost:3000/api', // Replace with your actual API URL
+  timeout: 10000,
   headers: {
     'Content-Type': 'application/json',
   },
 });
 
-// Add auth token to requests if available
-api.interceptors.request.use((config) => {
-  const token = localStorage.getItem('auth_token');
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
+// Add request interceptor
+api.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
   }
-  return config;
-});
+);
 
-// Handle response errors
+// Add response interceptor
 api.interceptors.response.use(
   (response) => response,
   (error) => {
-    // Handle token expiration
-    if (error.response && error.response.status === 401) {
-      localStorage.removeItem('auth_token');
+    if (error.response?.status === 401) {
+      // Handle unauthorized access
+      localStorage.removeItem('token');
       window.location.href = '/login';
     }
     return Promise.reject(error);
@@ -36,14 +42,17 @@ export default {
   auth: {
     login: (credentials) => api.post('/auth/login', credentials),
     register: (userData) => api.post('/auth/register', userData),
-    getProfile: () => api.get('/auth/profile'),
+    logout: () => api.post('/auth/logout'),
   },
   
   // Portfolio endpoints
   portfolio: {
     getAll: () => api.get('/portfolio'),
-    getByPlatform: (platform) => api.get(`/portfolio/platform/${platform}`),
     getById: (id) => api.get(`/portfolio/${id}`),
+    getByPlatform: (platform) => api.get(`/portfolio/platform/${platform}`),
+    create: (data) => api.post('/portfolio', data),
+    update: (id, data) => api.put(`/portfolio/${id}`, data),
+    delete: (id) => api.delete(`/portfolio/${id}`),
   },
   
   // Mutual Fund endpoints
@@ -66,5 +75,11 @@ export default {
   comparison: {
     compare: (items) => api.post('/comparison', { items }),
     getRecommendations: (itemId) => api.get(`/comparison/recommendations/${itemId}`),
+  },
+  
+  // Transaction endpoints
+  transactions: {
+    execute: (data) => api.post('/transactions/execute', data),
+    getHistory: () => api.get('/transactions/history'),
   },
 };

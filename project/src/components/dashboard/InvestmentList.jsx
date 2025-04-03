@@ -2,81 +2,91 @@ import React, { useState } from 'react';
 import { Search, Filter } from 'lucide-react';
 import { usePortfolio } from '../../context/PortfolioContext';
 import InvestmentCard from './InvestmentCard';
+import Card from '../common/Card';
 
 const InvestmentList = () => {
-  const { portfolioData } = usePortfolio();
+  const { portfolio, loading, error } = usePortfolio();
   const [searchTerm, setSearchTerm] = useState('');
   const [filterType, setFilterType] = useState('all');
+  const [sortBy, setSortBy] = useState('value');
+
+  // Combine mutual funds and stocks
+  const allInvestments = [...(portfolio.mutualFunds || []), ...(portfolio.stocks || [])];
 
   // Filter investments based on search and type filter
-  const filteredInvestments = portfolioData.filter(investment => {
+  const filteredInvestments = allInvestments.filter(investment => {
     const matchesSearch = investment.name.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesFilter = filterType === 'all' || investment.type === filterType;
     return matchesSearch && matchesFilter;
   });
 
-  // Group by platform
-  const groupedByPlatform = filteredInvestments.reduce((acc, investment) => {
-    if (!acc[investment.platform]) {
-      acc[investment.platform] = [];
-    }
-    acc[investment.platform].push(investment);
-    return acc;
-  }, {});
+  if (loading) {
+    return (
+      <Card className="h-full">
+        <div className="flex justify-center items-center h-64">
+          <div className="w-8 h-8 border-4 border-purple-500 border-t-transparent rounded-full animate-spin"></div>
+        </div>
+      </Card>
+    );
+  }
+
+  if (error) {
+    return (
+      <Card className="h-full">
+        <div className="flex justify-center items-center h-64 text-red-500">
+          {error}
+        </div>
+      </Card>
+    );
+  }
 
   return (
-    <div className="mb-8">
+    <Card className="h-full">
       <div className="flex justify-between items-center mb-6">
-        <h2 className="text-2xl font-bold">Your Investments</h2>
-        
-        <div className="flex gap-3">
-          <div className="relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
-            <input
-              type="text"
-              placeholder="Search investments..."
-              className="pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-            />
-          </div>
-          
-          <select
-            className="px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-            value={filterType}
-            onChange={(e) => setFilterType(e.target.value)}
-          >
-            <option value="all">All Types</option>
-            <option value="stock">Stocks</option>
-            <option value="mf">Mutual Funds</option>
-            <option value="etf">ETFs</option>
-          </select>
-        </div>
+        <h2 className="text-xl font-semibold">Investments</h2>
+        <select 
+          value={sortBy}
+          onChange={(e) => setSortBy(e.target.value)}
+          className="bg-white/10 border border-white/20 rounded-lg px-3 py-1 text-sm focus:outline-none focus:border-purple-500"
+        >
+          <option value="value">Sort by Value</option>
+          <option value="change">Sort by Change</option>
+          <option value="name">Sort by Name</option>
+        </select>
       </div>
 
-      {Object.keys(groupedByPlatform).length > 0 ? (
-        Object.entries(groupedByPlatform).map(([platform, investments]) => (
-          <div key={platform} className="mb-8">
-            <div className="flex items-center mb-3">
-              <h3 className="text-lg font-semibold">{platform}</h3>
-              <div className="ml-3 px-3 py-1 bg-gray-100 rounded-full text-sm">
-                ₹{investments.reduce((sum, inv) => sum + inv.currentValue, 0).toLocaleString()}
+      {filteredInvestments.length === 0 ? (
+        <div className="text-center py-8 text-gray-500">
+          No investments found
+        </div>
+      ) : (
+        <div className="space-y-4">
+          {filteredInvestments.map((investment) => (
+            <div
+              key={investment.id}
+              className="p-4 bg-white/5 rounded-lg hover:bg-white/10 transition-all duration-300 cursor-pointer"
+            >
+              <div className="flex justify-between items-center">
+                <div>
+                  <h3 className="font-medium">{investment.name}</h3>
+                  <p className="text-sm text-gray-400">{investment.type}</p>
+                </div>
+                <div className="text-right">
+                  <p className="font-medium">
+                    ₹{investment.currentValue.toLocaleString()}
+                  </p>
+                  <p className={`text-sm ${
+                    investment.returns >= 0 ? 'text-green-400' : 'text-red-400'
+                  }`}>
+                    {investment.returns >= 0 ? '+' : ''}{investment.returnPercentage}%
+                  </p>
+                </div>
               </div>
             </div>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {investments.map((investment) => (
-                <InvestmentCard key={investment.id} investment={investment} />
-              ))}
-            </div>
-          </div>
-        ))
-      ) : (
-        <div className="text-center py-16 bg-gray-50 rounded-lg">
-          <p className="text-gray-500">No investments found matching your criteria</p>
+          ))}
         </div>
       )}
-    </div>
+    </Card>
   );
 };
 

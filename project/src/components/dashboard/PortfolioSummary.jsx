@@ -1,59 +1,54 @@
 import React from 'react';
-import { Wallet, TrendingUp, PieChart } from 'lucide-react';
 import { usePortfolio } from '../../context/PortfolioContext';
+import Card from '../common/Card';
 
 const PortfolioSummary = () => {
-  const { portfolioData } = usePortfolio();
+  const { portfolio } = usePortfolio();
   
-  // Calculate summary metrics
-  const totalInvestment = portfolioData.reduce((sum, item) => sum + item.investedAmount, 0);
-  const currentValue = portfolioData.reduce((sum, item) => sum + item.currentValue, 0);
-  const totalReturn = currentValue - totalInvestment;
-  const returnPercentage = (totalReturn / totalInvestment) * 100;
-  
-  const summaryCards = [
+  const stats = [
     {
-      title: 'Total Investment',
-      value: `₹${totalInvestment.toLocaleString()}`,
-      icon: <Wallet className="w-10 h-10 text-blue-500" />,
-      bgColor: 'bg-blue-50',
+      label: 'Total Value',
+      value: '$1,234,567',
+      change: '+5.2%',
+      isPositive: true,
     },
     {
-      title: 'Current Value',
-      value: `₹${currentValue.toLocaleString()}`,
-      icon: <PieChart className="w-10 h-10 text-green-500" />,
-      bgColor: 'bg-green-50',
+      label: 'Today\'s Return',
+      value: '$12,345',
+      change: '+1.8%',
+      isPositive: true,
     },
     {
-      title: 'Overall Return',
-      value: `₹${totalReturn.toLocaleString()} (${returnPercentage.toFixed(1)}%)`,
-      icon: <TrendingUp className="w-10 h-10 text-purple-500" />,
-      bgColor: 'bg-purple-50',
-      textColor: totalReturn >= 0 ? 'text-green-600' : 'text-red-600',
+      label: 'Total Return',
+      value: '$234,567',
+      change: '+23.4%',
+      isPositive: true,
+    },
+    {
+      label: 'Risk Score',
+      value: '7.2',
+      change: '-0.3',
+      isPositive: false,
     },
   ];
 
   return (
-    <div className="mb-8">
-      <h2 className="text-2xl font-bold mb-4">Portfolio Summary</h2>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        {summaryCards.map((card, index) => (
-          <div 
-            key={index}
-            className={`${card.bgColor} p-6 rounded-lg shadow-sm`}
-          >
-            <div className="flex justify-between items-center">
-              <div>
-                <p className="text-gray-600 mb-1">{card.title}</p>
-                <p className={`text-2xl font-bold ${card.textColor || 'text-gray-800'}`}>
-                  {card.value}
-                </p>
-              </div>
-              {card.icon}
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      {stats.map((stat) => (
+        <Card key={stat.label} className="hover-card">
+          <div className="space-y-2">
+            <p className="text-gray-400 text-sm">{stat.label}</p>
+            <div className="flex items-end space-x-2">
+              <span className="text-2xl font-bold">{stat.value}</span>
+              <span className={`text-sm ${
+                stat.isPositive ? 'text-green-400' : 'text-red-400'
+              }`}>
+                {stat.change}
+              </span>
             </div>
           </div>
-        ))}
-      </div>
+        </Card>
+      ))}
     </div>
   );
 };
