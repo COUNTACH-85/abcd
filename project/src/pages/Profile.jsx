@@ -1,11 +1,18 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '@/context/AuthContext';
+import { useTheme } from '@/context/ThemeContext';
 import Card from '@/components/common/Card';
+import { User } from 'lucide-react';
 
 function Profile() {
   const { user } = useAuth();
+  const { isDarkMode } = useTheme();
   const [isLoading, setIsLoading] = useState(true);
   const [activeTab, setActiveTab] = useState('overview');
+  
+  // Use a fallback name if user.name is not available
+  const userName = user?.name || user?.email?.split('@')[0] || 'User';
+  const userInitial = userName[0]?.toUpperCase() || 'U';
 
   useEffect(() => {
     setTimeout(() => setIsLoading(false), 800);
@@ -38,15 +45,15 @@ function Profile() {
         <div className="flex items-center space-x-6">
           <div className="relative">
             <div className="w-24 h-24 rounded-full bg-gradient-to-r from-purple-500 to-blue-600 animate-pulse-slow flex items-center justify-center text-2xl font-bold">
-              {user?.name?.[0]}
+              {userInitial}
             </div>
             <div className="absolute bottom-0 right-0 w-6 h-6 rounded-full bg-green-500 border-4 border-[#1a1a2e]" />
           </div>
           <div>
-            <h1 className="text-3xl font-bold text-white">
-              {user?.name}
+            <h1 className="text-3xl font-bold">
+              {userName}
             </h1>
-            <p className="text-gray-400">Premium Member</p>
+            <p className={isDarkMode ? "text-gray-400" : "text-gray-600"}>Premium Member</p>
           </div>
         </div>
       </div>
@@ -58,7 +65,7 @@ function Profile() {
             className="glass-effect p-6 hover-card animate-fade-in"
             style={{ animationDelay: `${index * 100}ms` }}
           >
-            <h3 className="text-gray-400 text-sm">{stat.label}</h3>
+            <h3 className={isDarkMode ? "text-gray-400" : "text-gray-600"} text-sm>{stat.label}</h3>
             <p className="text-2xl font-bold mt-2">{stat.value}</p>
           </div>
         ))}
@@ -74,8 +81,12 @@ function Profile() {
                   onClick={() => setActiveTab(tab)}
                   className={`px-4 py-2 rounded-lg transition-all ${
                     activeTab === tab
-                      ? 'bg-purple-500/20 text-purple-300'
-                      : 'hover:bg-purple-500/10 text-gray-400'
+                      ? isDarkMode 
+                          ? 'bg-purple-500/20 text-purple-300' 
+                          : 'bg-purple-500/20 text-purple-700'
+                      : isDarkMode
+                          ? 'hover:bg-purple-500/10 text-gray-400'
+                          : 'hover:bg-purple-500/10 text-gray-600'
                   }`}
                 >
                   {tab.charAt(0).toUpperCase() + tab.slice(1)}
@@ -90,11 +101,11 @@ function Profile() {
                     <h3 className="font-medium mb-2">Account Details</h3>
                     <div className="grid grid-cols-2 gap-4">
                       <div>
-                        <p className="text-gray-400 text-sm">Email</p>
-                        <p>{user?.email}</p>
+                        <p className={isDarkMode ? "text-gray-400" : "text-gray-600"} text-sm>Email</p>
+                        <p>{user?.email || 'example@email.com'}</p>
                       </div>
                       <div>
-                        <p className="text-gray-400 text-sm">Member Since</p>
+                        <p className={isDarkMode ? "text-gray-400" : "text-gray-600"} text-sm>Member Since</p>
                         <p>March 2024</p>
                       </div>
                     </div>
@@ -111,12 +122,12 @@ function Profile() {
                             </div>
                             <div>
                               <p className="font-medium">{activity.type}</p>
-                              <p className="text-sm text-gray-400">{activity.time}</p>
+                              <p className={`text-sm ${isDarkMode ? "text-gray-400" : "text-gray-600"}`}>{activity.time}</p>
                             </div>
                           </div>
                           <div className="text-right">
                             <p className="font-medium">{activity.amount}</p>
-                            <p className="text-sm text-gray-400">{activity.asset}</p>
+                            <p className={`text-sm ${isDarkMode ? "text-gray-400" : "text-gray-600"}`}>{activity.asset}</p>
                           </div>
                         </div>
                       ))}
@@ -132,7 +143,7 @@ function Profile() {
           <Card className="glass-effect sticky top-24">
             <h2 className="text-xl font-semibold mb-4">Quick Actions</h2>
             <div className="space-y-3">
-              {['Deposit Funds', 'Withdraw', 'API Keys', 'Support'].map((action, index) => (
+              {['Deposit Funds', 'Withdraw', 'API Keys', 'Support'].map((action) => (
                 <button
                   key={action}
                   className="w-full p-4 text-left rounded-lg bg-white/5 hover:bg-white/10 transition-colors flex items-center justify-between"

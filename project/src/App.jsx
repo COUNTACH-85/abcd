@@ -17,9 +17,16 @@ function App() {
   const { isDarkMode } = useTheme();
 
   return (
-    <div className={`min-h-screen flex flex-col ${isDarkMode ? 'bg-gray-900 text-gray-100' : 'bg-gray-50 text-gray-900'}`}>
+    <div className={`min-h-screen flex flex-col ${isDarkMode ? 'bg-gray-900 text-gray-100' : 'bg-white text-gray-900'}`}>
+      {/* Animated background elements */}
+      <div className="bg-blur-elements">
+        <div className="blur-circle"></div>
+        <div className="blur-circle"></div>
+        <div className="blur-circle"></div>
+      </div>
+      
       <Navbar />
-      <main className="flex-grow container mx-auto px-4 py-6">
+      <main className="flex-grow container mx-auto px-4 py-6 relative z-10">
         <Routes>
           <Route path="/" element={<Landing />} />
           <Route path="/login" element={!user ? <Login /> : <Navigate to="/dashboard" />} />

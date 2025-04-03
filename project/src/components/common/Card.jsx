@@ -1,18 +1,31 @@
 import PropTypes from 'prop-types';
+import { useTheme } from '@/context/ThemeContext';
 
-function Card({ title, children, className = '' }) {
+const Card = ({ children, className = '', withHover = false }) => {
+  const { isDarkMode } = useTheme();
+  
   return (
-    <div className={`bg-white rounded-lg shadow-md p-4 ${className}`}>
-      {title && <h2 className="text-xl font-semibold mb-4">{title}</h2>}
+    <div 
+      className={`
+        glass-effect 
+        ${withHover ? 'hover-card' : ''} 
+        p-6 
+        ${isDarkMode 
+          ? 'shadow-lg shadow-purple-900/10' 
+          : 'shadow-lg shadow-blue-900/5'
+        }
+        ${className}
+      `}
+    >
       {children}
     </div>
   );
-}
+};
 
 Card.propTypes = {
-  title: PropTypes.string,
   children: PropTypes.node.isRequired,
   className: PropTypes.string,
+  withHover: PropTypes.bool,
 };
 
 export default Card; 

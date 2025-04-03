@@ -88,39 +88,39 @@ const Navbar = () => {
               className="p-2 rounded-full transition-colors duration-300 relative overflow-hidden group"
               aria-label={isDarkMode ? 'Switch to light mode' : 'Switch to dark mode'}
             >
-              <div className="absolute inset-0 w-full h-full transform scale-0 group-hover:scale-100 transition-transform duration-300 rounded-full bg-purple-600/10 origin-center"></div>
+              <div className="absolute inset-0 w-full h-full transform scale-0 group-hover:scale-100 transition-transform duration-300 rounded-full bg-blue-600/10 origin-center"></div>
               {isDarkMode ? (
                 <Sun className="w-5 h-5 text-yellow-400 relative z-10" />
               ) : (
-                <Moon className="w-5 h-5 text-indigo-700 relative z-10" />
+                <Moon className="w-5 h-5 text-blue-700 relative z-10" />
               )}
             </button>
 
             {user ? (
               <button
                 onClick={logout}
-                className="button-animate relative bg-gradient-to-r from-purple-600 to-indigo-600 
-                         text-white px-6 py-2 rounded-lg font-medium transition-all hover:shadow-[0_5px_20px_-5px_rgba(147,51,234,0.7)] transform hover:-translate-y-0.5 overflow-hidden group"
+                className={`button-animate relative ${isDarkMode ? 'bg-gradient-to-r from-purple-600 to-indigo-600 hover:shadow-[0_5px_20px_-5px_rgba(147,51,234,0.7)]' : 'bg-gradient-to-r from-blue-500 to-blue-600 hover:shadow-[0_5px_20px_-5px_rgba(37,99,235,0.7)]'} 
+                         text-white px-6 py-2 rounded-lg font-medium transition-all transform hover:-translate-y-0.5 overflow-hidden group`}
               >
                 <span className="relative z-10">Logout</span>
-                <div className="absolute inset-0 w-full h-full transform scale-0 group-hover:scale-100 transition-transform duration-300 rounded-lg bg-gradient-to-r from-purple-700 to-indigo-700 origin-bottom"></div>
+                <div className={`absolute inset-0 w-full h-full transform scale-0 group-hover:scale-100 transition-transform duration-300 rounded-lg ${isDarkMode ? 'bg-gradient-to-r from-purple-700 to-indigo-700' : 'bg-gradient-to-r from-blue-600 to-blue-700'} origin-bottom`}></div>
               </button>
             ) : (
               <div className="flex items-center space-x-4">
                 <Link
                   to="/login"
-                  className={`text-purple-600 hover:text-purple-500 font-medium transition-colors relative group ${isDarkMode ? 'text-purple-400 hover:text-purple-300' : ''}`}
+                  className={`font-medium transition-colors relative group ${isDarkMode ? 'text-purple-400 hover:text-purple-300' : 'text-blue-600 hover:text-blue-500'}`}
                 >
                   <span>Login</span>
-                  <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-purple-500 to-indigo-500 group-hover:w-full transition-all duration-300"></div>
+                  <div className={`absolute bottom-0 left-0 w-0 h-0.5 ${isDarkMode ? 'bg-gradient-to-r from-purple-500 to-indigo-500' : 'bg-gradient-to-r from-blue-500 to-blue-600'} group-hover:w-full transition-all duration-300`}></div>
                 </Link>
                 <Link
                   to="/signup"
-                  className="button-animate relative bg-gradient-to-r from-purple-600 to-indigo-600 
-                           text-white px-6 py-2 rounded-lg font-medium transition-all hover:shadow-[0_5px_20px_-5px_rgba(147,51,234,0.7)] transform hover:-translate-y-0.5 overflow-hidden group"
+                  className={`button-animate relative ${isDarkMode ? 'bg-gradient-to-r from-purple-600 to-indigo-600 hover:shadow-[0_5px_20px_-5px_rgba(147,51,234,0.7)]' : 'bg-gradient-to-r from-blue-500 to-blue-600 hover:shadow-[0_5px_20px_-5px_rgba(37,99,235,0.7)]'} 
+                           text-white px-6 py-2 rounded-lg font-medium transition-all transform hover:-translate-y-0.5 overflow-hidden group`}
                 >
                   <span className="relative z-10">Sign Up</span>
-                  <div className="absolute inset-0 w-full h-full transform scale-0 group-hover:scale-100 transition-transform duration-300 rounded-lg bg-gradient-to-r from-purple-700 to-indigo-700 origin-bottom"></div>
+                  <div className={`absolute inset-0 w-full h-full transform scale-0 group-hover:scale-100 transition-transform duration-300 rounded-lg ${isDarkMode ? 'bg-gradient-to-r from-purple-700 to-indigo-700' : 'bg-gradient-to-r from-blue-600 to-blue-700'} origin-bottom`}></div>
                 </Link>
               </div>
             )}
@@ -133,19 +133,19 @@ const Navbar = () => {
               className="p-2 rounded-full transition-colors duration-300 relative overflow-hidden group"
               aria-label={isDarkMode ? 'Switch to light mode' : 'Switch to dark mode'}
             >
-              <div className="absolute inset-0 w-full h-full transform scale-0 group-hover:scale-100 transition-transform duration-300 rounded-full bg-purple-600/10 origin-center"></div>
+              <div className="absolute inset-0 w-full h-full transform scale-0 group-hover:scale-100 transition-transform duration-300 rounded-full bg-blue-600/10 origin-center"></div>
               {isDarkMode ? (
                 <Sun className="w-5 h-5 text-yellow-400 relative z-10" />
               ) : (
-                <Moon className="w-5 h-5 text-indigo-700 relative z-10" />
+                <Moon className="w-5 h-5 text-blue-700 relative z-10" />
               )}
             </button>
             
             <button 
               onClick={toggleMobileMenu}
-              className="inline-flex items-center justify-center p-2 rounded-md text-purple-400 hover:text-purple-300 hover:bg-purple-600/10 focus:outline-none transition-all duration-300 relative overflow-hidden group"
+              className={`inline-flex items-center justify-center p-2 rounded-md ${isDarkMode ? 'text-purple-400 hover:text-purple-300 hover:bg-purple-600/10' : 'text-blue-600 hover:text-blue-500 hover:bg-blue-600/10'} focus:outline-none transition-all duration-300 relative overflow-hidden group`}
             >
-              <div className="absolute inset-0 w-full h-full transform scale-0 group-hover:scale-100 transition-transform duration-300 rounded-lg bg-gradient-to-r from-purple-800/20 to-indigo-800/20 origin-center"></div>
+              <div className={`absolute inset-0 w-full h-full transform scale-0 group-hover:scale-100 transition-transform duration-300 rounded-lg ${isDarkMode ? 'bg-gradient-to-r from-purple-800/20 to-indigo-800/20' : 'bg-gradient-to-r from-blue-700/20 to-blue-800/20'} origin-center`}></div>
               {mobileMenuOpen ? (
                 <X className="block h-6 w-6 relative z-10" aria-hidden="true" />
               ) : (
@@ -158,7 +158,7 @@ const Navbar = () => {
 
       {/* Mobile menu */}
       <div 
-        className={`${mobileMenuOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'} md:hidden ${isDarkMode ? 'bg-gradient-to-r from-purple-900/95 to-indigo-900/95' : 'bg-gradient-to-r from-purple-200/95 to-indigo-200/95'} backdrop-blur-xl shadow-[0_10px_50px_-12px_rgba(147,51,234,0.5)] transition-all duration-500 overflow-hidden`}
+        className={`${mobileMenuOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'} md:hidden ${isDarkMode ? 'bg-gradient-to-r from-purple-900/95 to-indigo-900/95' : 'bg-gradient-to-r from-blue-100/95 to-blue-200/95'} backdrop-blur-xl ${isDarkMode ? 'shadow-[0_10px_50px_-12px_rgba(147,51,234,0.5)]' : 'shadow-[0_10px_50px_-12px_rgba(37,99,235,0.5)]'} transition-all duration-500 overflow-hidden`}
       >
         <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
           {navLinks.map((link) => (
@@ -169,34 +169,34 @@ const Navbar = () => {
                 location.pathname === link.path
                   ? isDarkMode 
                     ? 'bg-purple-600/20 text-purple-300 border border-purple-500/20' 
-                    : 'bg-purple-600/20 text-purple-900 border border-purple-500/20'
+                    : 'bg-blue-600/20 text-blue-900 border border-blue-500/20'
                   : isDarkMode
                     ? 'text-gray-300 hover:text-purple-300 border border-transparent hover:border-purple-500/10'
-                    : 'text-gray-700 hover:text-purple-700 border border-transparent hover:border-purple-500/10'
+                    : 'text-gray-700 hover:text-blue-700 border border-transparent hover:border-blue-500/10'
               }`}
               onClick={() => setMobileMenuOpen(false)}
             >
               <span className="relative z-10">{link.label}</span>
-              <div className="absolute inset-0 -z-10 bg-gradient-to-r from-purple-600/0 via-purple-600/0 to-purple-600/0 group-hover:from-purple-600/10 group-hover:via-purple-600/20 group-hover:to-purple-600/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+              <div className={`absolute inset-0 -z-10 bg-gradient-to-r ${isDarkMode ? 'from-purple-600/0 via-purple-600/0 to-purple-600/0 group-hover:from-purple-600/10 group-hover:via-purple-600/20 group-hover:to-purple-600/10' : 'from-blue-600/0 via-blue-600/0 to-blue-600/0 group-hover:from-blue-600/10 group-hover:via-blue-600/20 group-hover:to-blue-600/10'} opacity-0 group-hover:opacity-100 transition-opacity duration-300`}></div>
             </Link>
           ))}
           {!user && (
             <>
               <Link
                 to="/login"
-                className={`block px-3 py-2 rounded-md ${isDarkMode ? 'text-gray-300 hover:text-purple-300' : 'text-gray-700 hover:text-purple-700'} relative group`}
+                className={`block px-3 py-2 rounded-md ${isDarkMode ? 'text-gray-300 hover:text-purple-300' : 'text-gray-700 hover:text-blue-700'} relative group`}
                 onClick={() => setMobileMenuOpen(false)}
               >
                 <span className="relative z-10">Login</span>
-                <div className="absolute inset-0 -z-10 bg-gradient-to-r from-purple-600/0 via-purple-600/0 to-purple-600/0 group-hover:from-purple-600/10 group-hover:via-purple-600/20 group-hover:to-purple-600/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                <div className={`absolute inset-0 -z-10 bg-gradient-to-r ${isDarkMode ? 'from-purple-600/0 via-purple-600/0 to-purple-600/0 group-hover:from-purple-600/10 group-hover:via-purple-600/20 group-hover:to-purple-600/10' : 'from-blue-600/0 via-blue-600/0 to-blue-600/0 group-hover:from-blue-600/10 group-hover:via-blue-600/20 group-hover:to-blue-600/10'} opacity-0 group-hover:opacity-100 transition-opacity duration-300`}></div>
               </Link>
               <Link
                 to="/signup"
-                className={`block px-3 py-2 rounded-md ${isDarkMode ? 'bg-purple-600/20 text-purple-300 border border-purple-500/20' : 'bg-purple-600/20 text-purple-900 border border-purple-500/20'} relative group`}
+                className={`block px-3 py-2 rounded-md ${isDarkMode ? 'bg-purple-600/20 text-purple-300 border border-purple-500/20' : 'bg-blue-600/20 text-blue-900 border border-blue-500/20'} relative group`}
                 onClick={() => setMobileMenuOpen(false)}
               >
                 <span className="relative z-10">Sign Up</span>
-                <div className="absolute inset-0 -z-10 bg-gradient-to-r from-purple-600/10 via-purple-600/20 to-purple-600/10 opacity-100 transition-opacity duration-300"></div>
+                <div className={`absolute inset-0 -z-10 bg-gradient-to-r ${isDarkMode ? 'from-purple-600/10 via-purple-600/20 to-purple-600/10' : 'from-blue-600/10 via-blue-600/20 to-blue-600/10'} opacity-100 transition-opacity duration-300`}></div>
               </Link>
             </>
           )}
@@ -206,10 +206,10 @@ const Navbar = () => {
                 logout();
                 setMobileMenuOpen(false);
               }}
-              className={`block w-full text-left px-3 py-2 rounded-md ${isDarkMode ? 'text-gray-300 hover:text-purple-300' : 'text-gray-700 hover:text-purple-700'} relative group`}
+              className={`block w-full text-left px-3 py-2 rounded-md ${isDarkMode ? 'text-gray-300 hover:text-purple-300' : 'text-gray-700 hover:text-blue-700'} relative group`}
             >
               <span className="relative z-10">Logout</span>
-              <div className="absolute inset-0 -z-10 bg-gradient-to-r from-purple-600/0 via-purple-600/0 to-purple-600/0 group-hover:from-purple-600/10 group-hover:via-purple-600/20 group-hover:to-purple-600/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+              <div className={`absolute inset-0 -z-10 bg-gradient-to-r ${isDarkMode ? 'from-purple-600/0 via-purple-600/0 to-purple-600/0 group-hover:from-purple-600/10 group-hover:via-purple-600/20 group-hover:to-purple-600/10' : 'from-blue-600/0 via-blue-600/0 to-blue-600/0 group-hover:from-blue-600/10 group-hover:via-blue-600/20 group-hover:to-blue-600/10'} opacity-0 group-hover:opacity-100 transition-opacity duration-300`}></div>
             </button>
           )}
         </div>

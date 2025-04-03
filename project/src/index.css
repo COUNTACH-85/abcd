@@ -27,8 +27,10 @@
 }
 
 :root.light {
-  --primary-dark: #e6e6fa;
-  --primary-light: #1a1a2e;
+  --primary-dark: #ffffff;
+  --primary-light: #1e88e5;
+  --accent-color: #1e88e5;
+  --secondary-accent: #64b5f6;
   color: rgba(0, 0, 0, 0.87);
 }
 
@@ -41,6 +43,82 @@ a:hover {
   color: #535bf2;
 }
 
+/* Animated background elements */
+.bg-blur-elements {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.blur-circle {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(70px);
+  opacity: 0.5;
+  animation: float 15s infinite ease-in-out;
+}
+
+/* Dark mode background */
+.dark .bg-blur-elements .blur-circle:nth-child(1) {
+  background: rgba(105, 75, 185, 0.5);
+  width: 300px;
+  height: 300px;
+  top: 10%;
+  left: 15%;
+  animation-delay: 0s;
+}
+
+.dark .bg-blur-elements .blur-circle:nth-child(2) {
+  background: rgba(48, 76, 180, 0.5);
+  width: 350px;
+  height: 350px;
+  top: 60%;
+  right: 15%;
+  animation-delay: 2s;
+}
+
+.dark .bg-blur-elements .blur-circle:nth-child(3) {
+  background: rgba(72, 40, 120, 0.4);
+  width: 250px;
+  height: 250px;
+  bottom: 10%;
+  left: 25%;
+  animation-delay: 4s;
+}
+
+/* Light mode background */
+.light .bg-blur-elements .blur-circle:nth-child(1) {
+  background: rgba(30, 136, 229, 0.2);
+  width: 300px;
+  height: 300px;
+  top: 10%;
+  left: 15%;
+  animation-delay: 0s;
+}
+
+.light .bg-blur-elements .blur-circle:nth-child(2) {
+  background: rgba(66, 165, 245, 0.15);
+  width: 350px;
+  height: 350px;
+  top: 60%;
+  right: 15%;
+  animation-delay: 2s;
+}
+
+.light .bg-blur-elements .blur-circle:nth-child(3) {
+  background: rgba(33, 150, 243, 0.15);
+  width: 250px;
+  height: 250px;
+  bottom: 10%;
+  left: 25%;
+  animation-delay: 4s;
+}
+
 .dark body {
   @apply bg-gradient-to-br from-[#1a1a2e] to-[#2d3a8c] min-h-screen text-[#e6e6fa];
   margin: 0;
@@ -48,15 +126,19 @@ a:hover {
   place-items: center;
   min-width: 320px;
   min-height: 100vh;
+  position: relative;
+  isolation: isolate;
 }
 
 .light body {
-  @apply bg-gradient-to-br from-[#f5f5ff] to-[#e6e6fa] min-h-screen text-[#1a1a2e];
+  @apply bg-white min-h-screen text-[#1a1a2e];
   margin: 0;
   display: flex;
   place-items: center;
   min-width: 320px;
   min-height: 100vh;
+  position: relative;
+  isolation: isolate;
 }
 
 h1 {
@@ -113,8 +195,11 @@ button:focus-visible {
 }
 
 @keyframes float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-10px); }
+  0% { transform: translateY(0) rotate(0deg); }
+  25% { transform: translateY(-15px) rotate(2deg); }
+  50% { transform: translateY(0) rotate(0deg); }
+  75% { transform: translateY(15px) rotate(-2deg); }
+  100% { transform: translateY(0) rotate(0deg); }
 }
 
 /* Custom Classes */
@@ -245,69 +330,6 @@ button:focus-visible {
   }
 }
 
-@keyframes float {
-  0%, 100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-10px);
-  }
-}
-
-@keyframes blob {
-  0% {
-    transform: translate(0px, 0px) scale(1);
-  }
-  33% {
-    transform: translate(30px, -50px) scale(1.1);
-  }
-  66% {
-    transform: translate(-20px, 20px) scale(0.9);
-  }
-  100% {
-    transform: translate(0px, 0px) scale(1);
-  }
-}
-
-@keyframes shake {
-  10%, 90% {
-    transform: translate3d(-1px, 0, 0);
-  }
-  20%, 80% {
-    transform: translate3d(2px, 0, 0);
-  }
-  30%, 50%, 70% {
-    transform: translate3d(-4px, 0, 0);
-  }
-  40%, 60% {
-    transform: translate3d(4px, 0, 0);
-  }
-}
-
-/* Custom gradient text */
-.gradient-text {
-  @apply bg-clip-text text-transparent bg-gradient-to-r from-purple-500 to-indigo-500;
-}
-
-/* Custom scrollbar */
-::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
-}
-
-::-webkit-scrollbar-track {
-  background: theme('colors.gray.100');
-}
-
-::-webkit-scrollbar-thumb {
-  background: linear-gradient(to bottom, theme('colors.purple.500'), theme('colors.indigo.500'));
-  border-radius: 4px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(to bottom, theme('colors.purple.600'), theme('colors.indigo.600'));
-}
-
 /* Dark mode glass effect */
 .dark .glass-effect {
   @apply bg-white/10 backdrop-blur-md border border-white/20 rounded-xl;
@@ -315,7 +337,7 @@ button:focus-visible {
 
 /* Light mode glass effect */
 .light .glass-effect {
-  @apply bg-black/5 backdrop-blur-md border border-black/10 rounded-xl;
+  @apply bg-blue-500/5 backdrop-blur-md border border-blue-300/20 rounded-xl shadow-sm;
 }
 
 /* Light/Dark Mode Transition */
@@ -352,4 +374,60 @@ button:focus-visible {
 
 .risk-profile-aggressive {
   @apply bg-gradient-to-r from-red-500/20 to-orange-400/10 border-red-500/30;
+}
+
+/* Light mode adjustments */
+.light .text-gray-400 {
+  @apply text-gray-600;
+}
+
+.light h1, .light h2, .light h3, .light h4, .light h5, .light h6 {
+  @apply text-blue-900;
+}
+
+.light .bg-white\/5 {
+  @apply bg-blue-50/50;
+}
+
+/* Light mode button styling */
+.light button.primary {
+  @apply bg-blue-500 hover:bg-blue-600 text-white;
+}
+
+.light .button-animate {
+  @apply bg-gradient-to-r from-blue-500 to-blue-600;
+  @apply hover:shadow-blue-500/30;
+}
+
+/* Active/focus states for light mode */
+.light .active-nav-link {
+  @apply text-blue-700 border-blue-500;
+}
+
+.light .active-tab {
+  @apply bg-blue-50 text-blue-800 border-blue-200;
+}
+
+/* Card styling for light mode */
+.light .card-header {
+  @apply border-b border-blue-100 text-blue-900;
+}
+
+.light .card-footer {
+  @apply border-t border-blue-100 bg-blue-50/50;
+}
+
+/* Input styling for light mode */
+.light input:focus, 
+.light select:focus, 
+.light textarea:focus {
+  @apply border-blue-500 ring-1 ring-blue-500/20;
+}
+
+.light .form-input {
+  @apply border-gray-300 focus:border-blue-500 focus:ring-blue-500/20;
+}
+
+.light a {
+  @apply text-blue-600 hover:text-blue-800;
 }
