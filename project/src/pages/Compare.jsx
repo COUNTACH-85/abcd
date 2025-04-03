@@ -105,7 +105,7 @@ function Compare() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <Card className="glass-effect animate-fade-in" style={{ animationDelay: '400ms' }}>
           <h2 className="text-xl font-semibold mb-4">Performance Comparison</h2>
-          <div className="h-64 bg-gradient-to-b from-purple-500/20 to-blue-500/20 rounded-lg animate-pulse-slow">
+          <div className="h-64 bg-gradient-to-b from-purple-500/20 to-blue-500/20 rounded-lg">
             {/* Chart component would go here */}
           </div>
         </Card>

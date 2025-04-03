@@ -1,31 +1,36 @@
 import React from 'react';
-import { useAuth } from '../context/AuthContext';
 import PortfolioSummary from '../components/dashboard/PortfolioSummary';
 import InvestmentList from '../components/dashboard/InvestmentList';
 import PlatformBreakdown from '../components/dashboard/PlatformBreakdown';
 import QuickActions from '../components/dashboard/QuickActions';
 
 const Dashboard = () => {
-  const { user } = useAuth();
-
   return (
     <div className="space-y-6">
-      <h1 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-blue-400">
-        Welcome back, {user?.name || 'Investor'}
-      </h1>
-
-      <PortfolioSummary />
+      <div className="dashboard-component glass-effect rounded-xl p-4">
+        <h2 className="text-xl font-semibold mb-4">Portfolio Summary</h2>
+        <PortfolioSummary />
+      </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2">
-          <InvestmentList />
+          <div className="dashboard-component glass-effect rounded-xl p-4">
+            <h2 className="text-xl font-semibold mb-4">Investments</h2>
+            <InvestmentList />
+          </div>
         </div>
         <div>
-          <PlatformBreakdown />
+          <div className="dashboard-component glass-effect rounded-xl p-4">
+            <h2 className="text-xl font-semibold mb-4">Platform Breakdown</h2>
+            <PlatformBreakdown />
+          </div>
         </div>
       </div>
 
-      <QuickActions />
+      <div className="dashboard-component glass-effect rounded-xl p-4">
+        <h2 className="text-xl font-semibold mb-4">Quick Actions</h2>
+        <QuickActions />
+      </div>
     </div>
   );
 };

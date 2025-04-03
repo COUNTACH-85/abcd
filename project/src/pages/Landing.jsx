@@ -1,9 +1,13 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { TrendingUp, Shield, Zap, Star } from 'lucide-react';
+import { TrendingUp, Shield, Zap, Star, ArrowRight } from 'lucide-react';
+import { useTheme } from '../context/ThemeContext';
+import { useAuth } from '../context/AuthContext';
 
 const Landing = () => {
   const [isVisible, setIsVisible] = useState(false);
+  const { isDarkMode } = useTheme();
+  const { user } = useAuth();
 
   useEffect(() => {
     setIsVisible(true);
@@ -31,11 +35,16 @@ const Landing = () => {
       description: "Receive personalized investment suggestions based on your goals."
     }
   ];
+  
+  // Custom style for text shadow to improve visibility
+  const textShadowStyle = isDarkMode 
+    ? { textShadow: '0px 0px 15px rgba(255, 255, 255, 0.8)' }
+    : { textShadow: '0px 0px 15px rgba(0, 0, 0, 0.3)' };
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen -mt-20">
       {/* Hero Section */}
-      <div className="min-h-[80vh] flex flex-col items-center justify-center relative overflow-hidden">
+      <div className="min-h-[90vh] flex flex-col items-center justify-center relative overflow-hidden pt-16">
         {/* Purple gradient background with animation */}
         <div className="absolute inset-0 bg-gradient-to-br from-indigo-900 via-purple-800 to-purple-900 opacity-20"></div>
         <div className="absolute -top-40 -left-40 w-80 h-80 bg-purple-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob"></div>
@@ -51,19 +60,48 @@ const Landing = () => {
               Your all-in-one solution for tracking, analyzing, and optimizing your investment portfolio
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link to="/login" className="button-animate bg-gradient-to-r from-purple-600 to-indigo-600 text-white px-8 py-3 rounded-lg font-medium text-lg shadow-purple-900/30 shadow-lg hover:shadow-purple-900/50 transition-all duration-300 transform hover:scale-105">
-                Sign In
-              </Link>
-              <Link to="/signup" className="button-animate bg-white/10 backdrop-blur-md border border-white/20 text-white px-8 py-3 rounded-lg font-medium text-lg shadow-purple-900/10 shadow-lg hover:shadow-purple-900/30 transition-all duration-300 transform hover:scale-105">
-                Create Account
-              </Link>
+              {user ? (
+                <Link 
+                  to="/dashboard" 
+                  className={`button-animate ${isDarkMode 
+                    ? 'bg-gradient-to-r from-purple-600 to-indigo-600 border-2 border-white/30' 
+                    : 'bg-gradient-to-r from-purple-500 to-indigo-500 border-2 border-white/50'
+                  } text-white !text-white px-8 py-3 rounded-lg font-black text-lg shadow-purple-900/30 shadow-lg hover:shadow-purple-900/50 transition-all duration-300 transform hover:scale-105 flex items-center justify-center tracking-wide`}
+                  style={textShadowStyle}
+                >
+                  Go to Dashboard <ArrowRight className="ml-2 w-5 h-5" />
+                </Link>
+              ) : (
+                <>
+                  <Link 
+                    to="/login" 
+                    className={`button-animate ${isDarkMode 
+                      ? 'bg-gradient-to-r from-purple-600 to-indigo-600 border-2 border-white/30' 
+                      : 'bg-gradient-to-r from-purple-500 to-indigo-500 border-2 border-white/50'
+                    } text-white !text-white px-8 py-3 rounded-lg font-black text-lg shadow-purple-900/30 shadow-lg hover:shadow-purple-900/50 transition-all duration-300 transform hover:scale-105 tracking-wide`}
+                    style={textShadowStyle}
+                  >
+                    Sign In
+                  </Link>
+                  <Link 
+                    to="/signup" 
+                    className={`button-animate ${isDarkMode 
+                      ? 'bg-purple-500/40 border-2 border-white/30 backdrop-blur-md' 
+                      : 'bg-purple-400/50 border-2 border-white/60 backdrop-blur-md'
+                    } text-white !text-white px-8 py-3 rounded-lg font-black text-lg shadow-purple-900/20 shadow-lg hover:shadow-purple-900/40 transition-all duration-300 transform hover:scale-105 tracking-wide`}
+                    style={textShadowStyle}
+                  >
+                    Create Account
+                  </Link>
+                </>
+              )}
             </div>
           </div>
         </div>
       </div>
 
       {/* Features Section */}
-      <div className="py-20 bg-gray-50">
+      <div className={`py-20 ${isDarkMode ? 'bg-gray-900' : 'bg-gray-50'}`}>
         <div className="container mx-auto px-6">
           <h2 className="text-3xl font-bold text-center mb-16 bg-clip-text text-transparent bg-gradient-to-r from-purple-600 to-indigo-600">
             Powerful Features for Savvy Investors
@@ -72,14 +110,14 @@ const Landing = () => {
             {features.map((feature, index) => (
               <div 
                 key={index} 
-                className={`bg-white p-6 rounded-xl shadow-xl border-t border-purple-100 hover:border-purple-300 transition-all duration-300 transform hover:-translate-y-2 ${isVisible ? 'animate-fade-in' : 'opacity-0'}`}
+                className={`${isDarkMode ? 'bg-gray-800 border-purple-900/50 hover:border-purple-700' : 'bg-white border-purple-100 hover:border-purple-300'} p-6 rounded-xl shadow-xl border-t transition-all duration-300 transform hover:-translate-y-2 ${isVisible ? 'animate-fade-in' : 'opacity-0'}`}
                 style={{ animationDelay: `${index * 150}ms` }}
               >
-                <div className="rounded-full bg-purple-100 w-16 h-16 flex items-center justify-center mb-4">
+                <div className={`rounded-full ${isDarkMode ? 'bg-purple-900/50' : 'bg-purple-100'} w-16 h-16 flex items-center justify-center mb-4`}>
                   {feature.icon}
                 </div>
-                <h3 className="text-xl font-semibold mb-2 text-gray-800">{feature.title}</h3>
-                <p className="text-gray-600">{feature.description}</p>
+                <h3 className={`text-xl font-semibold mb-2 ${isDarkMode ? 'text-gray-100' : 'text-gray-800'}`}>{feature.title}</h3>
+                <p className={`${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>{feature.description}</p>
               </div>
             ))}
           </div>

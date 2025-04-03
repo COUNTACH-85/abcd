@@ -58,16 +58,16 @@ a:hover {
 .blur-circle {
   position: absolute;
   border-radius: 50%;
-  filter: blur(70px);
+  filter: blur(80px);
   opacity: 0.5;
-  animation: float 15s infinite ease-in-out;
+  animation: float 18s infinite ease-in-out;
 }
 
 /* Dark mode background */
 .dark .bg-blur-elements .blur-circle:nth-child(1) {
-  background: rgba(105, 75, 185, 0.5);
-  width: 300px;
-  height: 300px;
+  background: rgba(105, 75, 185, 0.6);
+  width: 400px;
+  height: 400px;
   top: 10%;
   left: 15%;
   animation-delay: 0s;
@@ -75,17 +75,17 @@ a:hover {
 
 .dark .bg-blur-elements .blur-circle:nth-child(2) {
   background: rgba(48, 76, 180, 0.5);
-  width: 350px;
-  height: 350px;
+  width: 450px;
+  height: 450px;
   top: 60%;
   right: 15%;
   animation-delay: 2s;
 }
 
 .dark .bg-blur-elements .blur-circle:nth-child(3) {
-  background: rgba(72, 40, 120, 0.4);
-  width: 250px;
-  height: 250px;
+  background: rgba(72, 40, 120, 0.5);
+  width: 350px;
+  height: 350px;
   bottom: 10%;
   left: 25%;
   animation-delay: 4s;
@@ -93,27 +93,27 @@ a:hover {
 
 /* Light mode background */
 .light .bg-blur-elements .blur-circle:nth-child(1) {
-  background: rgba(30, 136, 229, 0.2);
-  width: 300px;
-  height: 300px;
+  background: rgba(30, 136, 229, 0.4);
+  width: 400px;
+  height: 400px;
   top: 10%;
   left: 15%;
   animation-delay: 0s;
 }
 
 .light .bg-blur-elements .blur-circle:nth-child(2) {
-  background: rgba(66, 165, 245, 0.15);
-  width: 350px;
-  height: 350px;
+  background: rgba(66, 165, 245, 0.3);
+  width: 450px;
+  height: 450px;
   top: 60%;
   right: 15%;
   animation-delay: 2s;
 }
 
 .light .bg-blur-elements .blur-circle:nth-child(3) {
-  background: rgba(33, 150, 243, 0.15);
-  width: 250px;
-  height: 250px;
+  background: rgba(33, 150, 243, 0.35);
+  width: 350px;
+  height: 350px;
   bottom: 10%;
   left: 25%;
   animation-delay: 4s;
@@ -325,8 +325,8 @@ button:focus-visible {
     transform: scale(1);
   }
   50% {
-    opacity: 0.8;
-    transform: scale(1.05);
+    opacity: 0.9;
+    transform: scale(1.02);
   }
 }
 
@@ -430,4 +430,188 @@ button:focus-visible {
 
 .light a {
   @apply text-blue-600 hover:text-blue-800;
+}
+
+/* Remove focus ring from theme toggle */
+button[aria-label="Switch to light mode"],
+button[aria-label="Switch to dark mode"] {
+  @apply focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0;
+  @apply bg-transparent hover:bg-transparent active:bg-transparent;
+  @apply shadow-none hover:shadow-none;
+}
+
+/* Ensure theme toggle icon is visible while background is transparent */
+button[aria-label="Switch to light mode"] .w-5,
+button[aria-label="Switch to dark mode"] .w-5 {
+  @apply drop-shadow-md;
+}
+
+/* Shimmer Effect */
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 0.7;
+  }
+  100% {
+    background-position: 200% 0;
+    opacity: 0.5;
+  }
+}
+
+.shimmer-effect {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.08) 25%,
+    rgba(255, 255, 255, 0.18) 50%,
+    rgba(255, 255, 255, 0.08) 75%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 8s infinite linear;
+  pointer-events: none;
+  mix-blend-mode: soft-light;
+  filter: blur(3px);
+}
+
+.dark .shimmer-effect {
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(139, 92, 246, 0.05) 25%,
+    rgba(139, 92, 246, 0.1) 50%,
+    rgba(139, 92, 246, 0.05) 75%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  mix-blend-mode: soft-light;
+}
+
+.light .shimmer-effect {
+  background: linear-gradient(
+    90deg,
+    rgba(30, 136, 229, 0) 0%,
+    rgba(30, 136, 229, 0.05) 25%,
+    rgba(30, 136, 229, 0.1) 50%,
+    rgba(30, 136, 229, 0.05) 75%,
+    rgba(30, 136, 229, 0) 100%
+  );
+  mix-blend-mode: soft-light;
+}
+
+/* Blur Background */
+.bg-blur {
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.dark .bg-blur {
+  background-color: rgba(30, 30, 60, 0.2);
+}
+
+.light .bg-blur {
+  background-color: rgba(220, 240, 255, 0.2);
+}
+
+/* Dashboard Component Enhancement */
+.dashboard-component {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  border-width: 1.5px;
+  transition: transform 0.2s, box-shadow 0.2s;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+.dashboard-component:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+}
+
+.dark .dashboard-component {
+  background-color: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2), 
+              0 0 1px rgba(255, 255, 255, 0.15),
+              0 0 12px rgba(139, 92, 246, 0.1);
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+.dark .dashboard-component:hover {
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25),
+              0 0 1px rgba(255, 255, 255, 0.2),
+              0 0 16px rgba(139, 92, 246, 0.15);
+}
+
+.light .dashboard-component {
+  background-color: rgba(255, 255, 255, 0.95);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06), 
+              0 0 1px rgba(30, 136, 229, 0.2),
+              0 0 12px rgba(30, 136, 229, 0.08);
+  border-color: rgba(30, 136, 229, 0.15);
+}
+
+.light .dashboard-component:hover {
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08),
+              0 0 1px rgba(30, 136, 229, 0.25),
+              0 0 16px rgba(30, 136, 229, 0.12);
+}
+
+/* Card inside dashboard styling */
+.dashboard-component .hover-card {
+  border-width: 1px;
+  background-color: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.dark .dashboard-component .hover-card {
+  background-color: rgba(255, 255, 255, 0.03);
+  border-color: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.light .dashboard-component .hover-card {
+  background-color: rgba(255, 255, 255, 0.8);
+  border-color: rgba(30, 136, 229, 0.12);
+  box-shadow: 0 4px 12px rgba(30, 136, 229, 0.06);
+}
+
+/* Geometric Shapes for Logo */
+.clip-path-hexagon {
+  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+}
+
+.clip-path-triangle {
+  clip-path: polygon(50% 0%, 100% 100%, 0% 100%);
+}
+
+.clip-path-triangle-inverse {
+  clip-path: polygon(50% 100%, 0% 0%, 100% 0%);
+}
+
+/* Spin animations */
+@keyframes spin-slow {
+  from { transform: translate(-50%, -50%) rotate(0deg); }
+  to { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+@keyframes spin-reverse-slow {
+  from { transform: translate(-50%, -50%) rotate(0deg); }
+  to { transform: translate(-50%, -50%) rotate(-360deg); }
+}
+
+.animate-spin-slow {
+  animation: spin-slow 10s linear infinite;
+}
+
+.animate-spin-reverse-slow {
+  animation: spin-reverse-slow 7s linear infinite;
 }
