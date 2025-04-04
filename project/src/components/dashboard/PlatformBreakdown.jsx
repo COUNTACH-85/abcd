@@ -16,8 +16,8 @@ const PlatformBreakdown = () => {
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-xl font-semibold">Platform Breakdown</h2>
         <select className="bg-white/10 border border-white/20 rounded-lg px-3 py-1 text-sm focus:outline-none focus:border-purple-500">
-          <option value="value">By Value</option>
-          <option value="returns">By Returns</option>
+          <option value="value" className="text-black">By Value</option>
+          <option value="returns" className="text-black">By Returns</option>
         </select>
       </div>
 
