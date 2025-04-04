@@ -49,9 +49,9 @@ const InvestmentList = () => {
           onChange={(e) => setSortBy(e.target.value)}
           className="bg-white/10 border border-white/20 rounded-lg px-3 py-1 text-sm focus:outline-none focus:border-purple-500"
         >
-          <option value="value">Sort by Value</option>
-          <option value="change">Sort by Change</option>
-          <option value="name">Sort by Name</option>
+          <option value="value" className="text-black">Sort by Value</option>
+          <option value="change" className="text-black">Sort by Change</option>
+          <option value="name" className="text-black">Sort by Name</option>
         </select>
       </div>
 
