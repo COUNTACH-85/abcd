@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useTheme } from '@/context/ThemeContext';
 import Card from '@/components/common/Card';
 import { ArrowUp, ArrowDown, AlertTriangle, BarChart2, LineChart, PieChart, Calendar } from 'lucide-react';
+import React from 'react';
 
 function Reports() {
   const [isLoading, setIsLoading] = useState(true);
@@ -51,19 +52,30 @@ function Reports() {
     );
   }
 
-  const TabButton = ({ name, icon, label }) => (
-    <button 
-      onClick={() => setActiveTab(name)}
-      className={`flex items-center space-x-2 px-4 py-3 rounded-lg transition-all duration-300 ${
-        activeTab === name 
-          ? 'bg-purple-600/20 border border-purple-500/30 text-purple-500' 
-          : 'hover:bg-purple-600/10 border border-transparent'
-      }`}
-    >
-      {icon}
-      <span>{label}</span>
-    </button>
-  );
+  const TabButton = ({ name, icon, label }) => {
+    // Clone the icon element and modify its color based on active state
+    const iconWithColor = React.cloneElement(icon, {
+      className: `w-5 h-5 ${activeTab === name ? 'text-purple-500' : isDarkMode ? 'text-black' : 'text-black'}`
+    });
+
+    return (
+      <button 
+        onClick={() => setActiveTab(name)}
+        className={`flex items-center space-x-2 px-4 py-3 rounded-lg transition-all duration-300 ${
+          activeTab === name 
+            ? isDarkMode 
+              ? 'bg-purple-900/50 border border-purple-500/30 text-purple-500'
+              : 'bg-purple-600/20 border border-purple-500/30 text-purple-500'
+            : isDarkMode
+              ? 'hover:bg-purple-900/30 border border-transparent text-black'
+              : 'hover:bg-purple-600/10 border border-transparent text-black'
+        }`}
+      >
+        {iconWithColor}
+        <span>{label}</span>
+      </button>
+    );
+  };
 
   const renderTabContent = () => {
     switch (activeTab) {
