@@ -82,11 +82,11 @@ function Profile() {
                   className={`px-4 py-2 rounded-lg transition-all ${
                     activeTab === tab
                       ? isDarkMode 
-                          ? 'bg-purple-500/20 text-purple-300' 
-                          : 'bg-purple-500/20 text-purple-700'
+                          ? 'bg-white text-purple-700' 
+                          : 'bg-white text-purple-700'
                       : isDarkMode
-                          ? 'hover:bg-purple-500/10 text-gray-400'
-                          : 'hover:bg-purple-500/10 text-gray-600'
+                          ? 'hover:bg-white/80 text-gray-400'
+                          : 'hover:bg-white/80 text-gray-600'
                   }`}
                 >
                   {tab.charAt(0).toUpperCase() + tab.slice(1)}
