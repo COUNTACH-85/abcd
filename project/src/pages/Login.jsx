@@ -61,7 +61,7 @@ function Login() {
       <div className="absolute inset-0 z-0">
         {!splineError && (
           <Spline 
-            scene="https://prod.spline.design/i78eVEmIdaGb5zjA/scene.splinecode"
+            scene="https://prod.spline.design/6QqI5NemvdHbYKDH/scene.splinecode"
             onError={onSplineError}
           />
         )}
