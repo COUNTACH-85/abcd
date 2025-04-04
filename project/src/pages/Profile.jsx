@@ -146,7 +146,7 @@ function Profile() {
               {['Deposit Funds', 'Withdraw', 'API Keys', 'Support'].map((action) => (
                 <button
                   key={action}
-                  className="w-full p-4 text-left rounded-lg bg-white/5 hover:bg-white/10 transition-colors flex items-center justify-between"
+                  className="w-full p-4 text-left rounded-lg bg-white/5 hover:bg-white/10 transition-colors flex items-center justify-between text-black"
                 >
                   <span>{action}</span>
                   <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
