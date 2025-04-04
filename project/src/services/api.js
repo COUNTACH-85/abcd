@@ -45,6 +45,16 @@ export default {
     logout: () => api.post('/auth/logout'),
   },
   
+  // Dashboard endpoints
+  dashboard: {
+    getSummary: () => api.get('/dashboard/summary'),
+    getPlatformBreakdown: () => api.get('/dashboard/platforms'),
+    getPerformanceMetrics: (period = '1y') => api.get(`/dashboard/performance?period=${period}`),
+    getAssetAllocation: () => api.get('/dashboard/asset-allocation'),
+    getRecentTransactions: (limit = 5) => api.get(`/dashboard/transactions?limit=${limit}`),
+    getComparisonData: (metrics = ['returns', 'risk']) => api.post('/dashboard/comparison', { metrics }),
+  },
+  
   // Portfolio endpoints
   portfolio: {
     getAll: () => api.get('/portfolio'),
@@ -61,6 +71,8 @@ export default {
     getDetails: (schemeCode) => api.get(`/mf/${schemeCode}`),
     buy: (orderData) => api.post('/mf/buy', orderData),
     sell: (orderData) => api.post('/mf/sell', orderData),
+    quickInvest: (orderData) => api.post('/mf/quick-invest', orderData),
+    getMfuLink: (schemeCode) => api.get(`/mf/${schemeCode}/mfu-link`),
   },
   
   // Stock endpoints
@@ -77,9 +89,38 @@ export default {
     getRecommendations: (itemId) => api.get(`/comparison/recommendations/${itemId}`),
   },
   
+  // Cryptocurrency endpoints
+  crypto: {
+    getAll: () => api.get('/crypto'),
+    getById: (id) => api.get(`/crypto/${id}`),
+    getPrice: (symbol) => api.get(`/crypto/${symbol}/price`),
+    buy: (orderData) => api.post('/crypto/buy', orderData),
+    sell: (orderData) => api.post('/crypto/sell', orderData),
+    getTopAssets: (limit = 10) => api.get(`/crypto/top?limit=${limit}`),
+    getHistory: (symbol, period = '1y') => api.get(`/crypto/${symbol}/history?period=${period}`),
+  },
+  
   // Transaction endpoints
   transactions: {
     execute: (data) => api.post('/transactions/execute', data),
     getHistory: () => api.get('/transactions/history'),
+    quickExecute: (data) => api.post('/transactions/quick-execute', data),
+    quickSell: (data) => api.post('/transactions/quick-sell', data),
+    cancel: (transactionId) => api.post(`/transactions/${transactionId}/cancel`),
+    getStatus: (transactionId) => api.get(`/transactions/${transactionId}/status`),
+    getReceipt: (transactionId) => api.get(`/transactions/${transactionId}/receipt`),
+  },
+  
+  // Unified Trading API
+  trading: {
+    search: (query, assetType = 'all') => api.get(`/trading/search?q=${query}&type=${assetType}`),
+    getDetails: (symbol, assetType) => api.get(`/trading/${assetType}/${symbol}`),
+    buy: (orderData) => api.post('/trading/buy', orderData),
+    sell: (orderData) => api.post('/trading/sell', orderData),
+    quickBuy: (symbol, assetType, amount) => api.post('/trading/quick-buy', { symbol, assetType, amount }),
+    quickSell: (symbol, assetType, units, amount) => api.post('/trading/quick-sell', { symbol, assetType, units, amount }),
+    getQuote: (symbol, assetType, quantity) => api.get(`/trading/quote?symbol=${symbol}&type=${assetType}&quantity=${quantity}`),
+    getMarketHours: (exchange) => api.get(`/trading/market-hours?exchange=${exchange}`),
+    getAssetTypes: () => api.get('/trading/asset-types'),
   },
 };

@@ -587,14 +587,17 @@ button[aria-label="Switch to dark mode"] .w-5 {
 /* Geometric Shapes for Logo */
 .clip-path-hexagon {
   clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+  -webkit-clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
 }
 
 .clip-path-triangle {
   clip-path: polygon(50% 0%, 100% 100%, 0% 100%);
+  -webkit-clip-path: polygon(50% 0%, 100% 100%, 0% 100%);
 }
 
 .clip-path-triangle-inverse {
   clip-path: polygon(50% 100%, 0% 0%, 100% 0%);
+  -webkit-clip-path: polygon(50% 100%, 0% 0%, 100% 0%);
 }
 
 /* Spin animations */
@@ -613,5 +616,5 @@ button[aria-label="Switch to dark mode"] .w-5 {
 }
 
 .animate-spin-reverse-slow {
-  animation: spin-reverse-slow 7s linear infinite;
+  animation: spin-reverse-slow 10s linear infinite;
 }
