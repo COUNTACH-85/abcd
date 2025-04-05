@@ -1,12 +1,81 @@
-# React + Vite
+# Portfolio Pro - Investment Platform
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern investment platform with Razorpay payment integration for executing trades and investments.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- Dashboard for portfolio overview
+- Asset comparison tools
+- Reports and analytics
+- Trade execution with Razorpay payment integration
+- Quick invest functionality
 
-## Expanding the ESLint configuration
+## Getting Started
 
-If you are developing a production application, we recommend using TypeScript and enable type-aware lint rules. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+### Prerequisites
+
+- Node.js 16.x or higher
+- npm or yarn
+
+### Installation
+
+1. Clone the repository
+2. Install dependencies:
+
+```bash
+npm install
+# or
+yarn install
+```
+
+3. Start the development server:
+
+```bash
+npm run dev
+# or
+yarn dev
+```
+
+4. In a separate terminal, start the backend server:
+
+```bash
+npm run server
+# or
+yarn server
+```
+
+The frontend will be available at http://localhost:5173 and the API server at http://localhost:3000.
+
+## Razorpay Integration
+
+This project includes integration with Razorpay payment gateway:
+
+- Test Mode credentials are included by default
+- Buy and Quick Invest buttons trigger Razorpay payment popup
+- Payments are processed in test mode (no real money is charged)
+
+### Test Card Details
+
+You can use the following test card details for transactions:
+
+- Card Number: 4111 1111 1111 1111
+- Expiry: Any future date
+- CVV: Any 3 digits
+- Name: Any name
+- 3D-Secure Password: 1234
+
+## Production Deployment
+
+For production, make sure to:
+
+1. Replace the Razorpay test keys with production keys
+2. Implement proper server-side security for payment verification
+3. Enable HTTPS for secure communication
+4. Store sensitive keys in environment variables
+
+## Built With
+
+- React + Vite
+- Tailwind CSS v4
+- Express.js (backend API)
+- Razorpay payment gateway

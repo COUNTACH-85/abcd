@@ -109,6 +109,8 @@ export default {
     cancel: (transactionId) => api.post(`/transactions/${transactionId}/cancel`),
     getStatus: (transactionId) => api.get(`/transactions/${transactionId}/status`),
     getReceipt: (transactionId) => api.get(`/transactions/${transactionId}/receipt`),
+    confirmPayment: (paymentId, transactionData) => api.post('/transactions/confirm-payment', { paymentId, ...transactionData }),
+    confirmQuickPayment: (paymentId, transactionData) => api.post('/transactions/confirm-quick-payment', { paymentId, ...transactionData }),
   },
   
   // Unified Trading API
@@ -122,5 +124,17 @@ export default {
     getQuote: (symbol, assetType, quantity) => api.get(`/trading/quote?symbol=${symbol}&type=${assetType}&quantity=${quantity}`),
     getMarketHours: (exchange) => api.get(`/trading/market-hours?exchange=${exchange}`),
     getAssetTypes: () => api.get('/trading/asset-types'),
+  },
+  
+  // Payment Gateway API
+  payments: {
+    createOrder: (amount, currency = 'INR', receipt = null) => 
+      api.post('/payments/create-order', { amount, currency, receipt }),
+    verifyPayment: (paymentId, orderId, signature) => 
+      api.post('/payments/verify', { paymentId, orderId, signature }),
+    getOrderStatus: (orderId) => 
+      api.get(`/payments/order/${orderId}`),
+    getPaymentReceipt: (paymentId) => 
+      api.get(`/payments/receipt/${paymentId}`),
   },
 };
