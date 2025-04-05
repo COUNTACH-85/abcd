@@ -3,6 +3,7 @@ import { useTheme } from '@/context/ThemeContext';
 import { useLocation, useNavigate } from 'react-router-dom';
 import Card from '@/components/common/Card';
 import { ArrowUp, ArrowDown, Sparkles, ChevronDown, ExternalLink, Check, Zap, ArrowUpDown, HelpCircle, BarChart3, DollarSign, Info } from 'lucide-react';
+import razorpayService from '@/services/razorpayService';
 // Import API service when ready to implement real API calls
 // import api from '@/services/api';
 
@@ -233,100 +234,99 @@ function Execute() {
       timestamp: new Date().toISOString()
     };
     
-    // For demo purposes, we'll determine API endpoint but simulate call
-    let apiEndpoint;
-    if (selectedAsset.type === 'mf') {
-      apiEndpoint = transactionType === 'buy' ? 'mutualFunds.buy' : 'mutualFunds.sell';
-    } else {
-      apiEndpoint = transactionType === 'buy' ? 'stocks.buy' : 'stocks.sell';
-    }
-    console.log(`Would call API endpoint: ${apiEndpoint}`);
+    // Get total amount to be paid in INR
+    const totalAmount = calculateTotal();
     
-    // For demo purposes, we'll simulate the API call
-    setTimeout(() => {
-      console.log('Transaction data:', transactionData);
-      setIsProcessing(false);
-      setIsSuccess(true);
-      
-      // Reset after showing success message
-      setTimeout(() => {
-        setIsSuccess(false);
-        setAmount('');
-        // Optionally navigate back to dashboard
-        // navigate('/');
-      }, 3000);
-    }, 1500);
-    
-    // In a real implementation, you would use:
-    // apiCall
-    //   .then(response => {
-    //     setIsProcessing(false);
-    //     setIsSuccess(true);
-    //     setTimeout(() => {
-    //       setIsSuccess(false);
-    //       setAmount('');
-    //     }, 3000);
-    //   })
-    //   .catch(error => {
-    //     setIsProcessing(false);
-    //     // Handle error state
-    //   });
+    // Initialize Razorpay payment
+    razorpayService.initiatePayment({
+      amount: totalAmount,
+      currency: 'INR',
+      name: selectedAsset.name,
+      description: `${transactionType === 'buy' ? 'Purchase' : 'Sell'} of ${selectedAsset.type === 'stock' ? `${amount} shares` : `₹${amount}`}`,
+      prefill: {
+        name: 'Investor Name',  // Ideally get from user context
+        email: 'investor@example.com',  // Ideally get from user context
+      },
+      onSuccess: (response) => {
+        console.log('Payment successful:', response);
+        setIsProcessing(false);
+        setIsSuccess(true);
+        
+        // In a real-world scenario, you'd confirm the payment with your backend
+        // api.transactions.confirmPayment(response.paymentId, transactionData)
+        
+        // Reset after showing success message
+        setTimeout(() => {
+          setIsSuccess(false);
+          setAmount('');
+        }, 3000);
+      },
+      onFailure: (error) => {
+        console.error('Payment failed:', error);
+        setIsProcessing(false);
+        
+        // Show failure message to the user
+        alert(`Payment failed: ${error.type === 'USER_CANCEL' ? 'Transaction was cancelled' : error.error}`);
+      }
+    });
   };
 
   // Handle quick buy - one-click purchase 
   const handleQuickBuy = () => {
     if (!selectedAsset) return;
     
+    setIsProcessing(true);
+    
     // Set default amount based on minimum investment for mutual funds
     // or 1 unit for stocks
-    if (selectedAsset.type === 'mf') {
-      setAmount(selectedAsset.minInvestment.toString());
-    } else {
-      setAmount('1');
-    }
-    
-    // Set transaction type to buy
-    setTransactionType('buy');
+    const quickAmount = selectedAsset.type === 'mf' 
+      ? selectedAsset.minInvestment 
+      : selectedAsset.price;
     
     // Create quick transaction data
     const quickTransactionData = {
       assetId: selectedAsset.id,
       assetType: selectedAsset.type,
-      amount: selectedAsset.type === 'mf' ? selectedAsset.minInvestment : selectedAsset.price,
+      amount: quickAmount,
       transactionType: 'buy',
       installmentType: 'oneTime',
       isQuickBuy: true,
       timestamp: new Date().toISOString()
     };
     
-    // Execute quick transaction
-    setIsProcessing(true);
-    
-    // Call the quick execute API
-    setTimeout(() => {
-      console.log('Quick transaction data:', quickTransactionData);
-      setIsProcessing(false);
-      setIsSuccess(true);
-      
-      // Reset after showing success message
-      setTimeout(() => {
-        setIsSuccess(false);
-      }, 3000);
-    }, 1000);
-    
-    // In a real implementation, you would use:
-    // api.transactions.quickExecute(quickTransactionData)
-    //   .then(response => {
-    //     setIsProcessing(false);
-    //     setIsSuccess(true);
-    //     setTimeout(() => {
-    //       setIsSuccess(false);
-    //     }, 3000);
-    //   })
-    //   .catch(error => {
-    //     setIsProcessing(false);
-    //     // Handle error state
-    //   });
+    // Initialize Razorpay payment for quick buy
+    razorpayService.initiatePayment({
+      amount: quickAmount,
+      currency: 'INR',
+      name: `Quick Invest - ${selectedAsset.name}`,
+      description: selectedAsset.type === 'stock' 
+        ? `Quick purchase of 1 share of ${selectedAsset.name}`
+        : `Quick investment of ₹${selectedAsset.minInvestment} in ${selectedAsset.name}`,
+      prefill: {
+        name: 'Investor Name',  // Ideally get from user context
+        email: 'investor@example.com',  // Ideally get from user context
+      },
+      onSuccess: (response) => {
+        console.log('Quick payment successful:', response);
+        setIsProcessing(false);
+        setIsSuccess(true);
+        
+        // In a real-world scenario, you'd confirm the payment with your backend
+        // api.transactions.confirmQuickPayment(response.paymentId, quickTransactionData)
+        
+        // Reset after showing success message
+        setTimeout(() => {
+          setIsSuccess(false);
+        }, 3000);
+      },
+      onFailure: (error) => {
+        console.error('Quick payment failed:', error);
+        setIsProcessing(false);
+        
+        // Show failure message to the user
+        alert(`Quick investment failed: ${error.type === 'USER_CANCEL' ? 'Transaction was cancelled' : error.error}`);
+      }
+    });
   };
 
   // Handle transaction type change
